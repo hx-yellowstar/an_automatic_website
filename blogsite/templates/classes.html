@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}{{class_name}}{% endblock %}
+{% block customstyle %}
+<style>
+	.hints{
+		font-size: 8px;
+		color: gray;
+	}
+	.blog-title{
+		margin: 6px 0px;
+	}
+	.am-article-title{
+		font-size: 22px;
+		font-weight: 550;
+	}
+	.blog-meta{
+		font-size: 12px;
+		margin:8px 0;
+	}
+	.am-u-lg-7{
+		width: 90%;
+		font-size: 13px;
+	}
+	#fliper{
+		text-align: center;
+		width: 500px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 0px;
+	}
+	#pagechoose{
+		font-size: 15px;
+		color: black;
+		margin-top: 2px;
+	}
+	.am-topbar-btn{
+		margin: 0px 20px;
+	}
+</style>
+{% endblock %}
+{% block content %}
+{% autoescape off %}
+<div class="am-g am-g-fixed blog-g-fixed">
+	<div>
+	<p id="headermessage" class="hints" style="margin-left:20px;"></p>
+  <div id="articlearea" class="am-u-md-8">
+    {% for articlecontent in articles %}
+    <article class="blog-main">
+      <h3 name="article_title" class="am-article-title blog-title">
+        <a href="/article/{{articlecontent.5}}">{{articlecontent.0}}</a>
+      </h3>
+      <h4 class="am-article-meta blog-meta">原文发布于 {{articlecontent.2}} (自动检测结果)</h4>
+      <div class="am-g blog-content">
+        <div class="am-u-lg-7">
+            {{articlecontent.3}}
+        </div>
+        <!--<div class="am-u-lg-5">-->
+          <!--<p><img src="http://f.cl.ly/items/451O3X0g47320D203D1B/不夠活潑.jpg"></p>-->
+        <!--</div>-->
+      </div>
+    </article>
+    <hr class="am-article-divider blog-hr">
+    {% endfor %}
+    {% endautoescape %}
+  </div>
+  <!-- 侧栏-->
+  <div class="am-u-md-4 blog-sidebar">
+    <div class="am-panel-group">
+      <section class="am-panel am-panel-default">
+        <div class="am-panel-hd">关于我</div>
+        <div class="am-panel-bd">
+          <p>这是一个实验，想看看在现代各类高级语言和方便工具的帮助下，由一个人运行的新闻网站能复杂到什么程度</p>
+          <a class="am-btn am-btn-success am-btn-sm" href="/about/">查看更多 →</a>
+        </div>
+      </section>
+    </div>
+  </div>
+	<!--侧栏-->
+  </div>
+{% if pagelist %}
+  <div class="fliparea" style="float:left; width:100%;">
+  	<ul id="fliper" class="am-pagination blog-pagination">
+				<li class="am-btn am-btn-primary am-topbar-btn am-btn-sm" id="lastpagebutton" onclick="javascript:postrequest(Number($('#pageselectid').val())-1, Number($('#maxpageindex').text()));">
+                    &laquo; 上一页
+                </li>
+			  <li id="pagechoose"><div class="pageselect">
+					选择页码: &nbsp;—&nbsp;
+					<p hidden id="maxpageindex">{{maxpagenum}}</p>
+					<select id="pageselectid" name="pagenum" onchange="javascript:postrequest(Number($('#pageselectid').val()), Number($('#maxpageindex').text()));">
+					    {% for every in pagelist %}
+					    	<option value="{{every}}">{{every}}</option>
+					    {% endfor %}
+				    </select>&nbsp;—
+				    <script>
+						document.getElementById("pageselectid").value="{{currentpagenum}}";
+					</script>
+				</div></li>
+				<li class="am-btn am-btn-primary am-topbar-btn am-btn-sm" id="nextpagebutton" onclick="javascript:postrequest(Number($('#pageselectid').val())+1, Number($('#maxpageindex').text()));">
+                    下一页 »
+                </li>
+		</ul>
+  </div>
+{% endif %}
+  </div>
+
+<script>
+	$(document).ready(headermessage());
+	function headermessage(){
+		console.log('caculating headermessage');
+		var currentpage = Number($('#pageselectid').val());
+		if (isNaN(currentpage)==false){
+			$('#headermessage').text('第'+((currentpage-1)*10+1)+'-'+((currentpage)*10)+'篇');
+		}
+	}
+	function postrequest(targetpage, maxpage){
+	    $("html,body").animate({scrollTop:0}, 100);
+	    console.log(targetpage);
+	    console.log(maxpage);
+		$.post('/classify/{{class_name}}/', {'targetindex': targetpage, 'maxpagenum': maxpage}, function(result){
+			var articlestring = '';
+			$('#maxpageindex').text(result['maxpagenum']);
+			$('#pageselectid').val(result['currentpagenum']);
+			articles = result['articles'];
+			for (i=0; i<articles.length; i++){
+				var each = articles[i];
+			articlestring += '<article class="blog-main">'+
+      '<h3 name="article_title" class="am-article-title blog-title">'+
+       '<a href="/article/'+each.page_urlcode+'">'+each.article_title+'</a>'+
+      '</h3>'+
+      '<h4 class="am-article-meta blog-meta">原文发布于' + each.release_time + '(自动检测结果)</h4>'+
+      '<div class="am-g blog-content">'+
+        '<div class="am-u-lg-7">'+
+            each.article_excerpt+
+        '</div>'+
+      '</div>'+
+    '</article>'+
+    '<hr class="am-article-divider blog-hr">';
+   }
+			$('#articlearea').html(articlestring);
+			headermessage();
+		}
+	)};
+</script>
+{% endblock %}
+

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{article_title}}{% endblock %}
+{% block customstyle %}
+<style>
+    .am-u-lg-7{
+        width:90%;
+    }
+	img{
+	margin-bottom:12px;
+	}
+</style>
+{% endblock %}
+{% block content %}
+<div class="am-g am-g-fixed blog-g-fixed">
+  <div class="am-u-md-8">
+    <article class="blog-main">
+      <h3 class="am-article-title blog-title">
+        {{article_title}}
+      </h3>
+      <h4 class="am-article-meta blog-meta">原文发布于 {{release_time}} (自动检测结果)</h4>
+      <div class="am-g blog-content">
+        <div class="am-u-lg-7">
+            {% autoescape off %}
+            <p>原文链接: <a href="{{article_url}}">{{article_url}}</a></p>
+            {{article_content}}
+            {% endautoescape %}
+        </div>
+        <!--<div class="am-u-lg-5">-->
+          <!--<p><img src="http://f.cl.ly/items/451O3X0g47320D203D1B/不夠活潑.jpg"></p>-->
+        <!--</div>-->
+      </div>
+    </article>
+  </div>
+</div>
+{% endblock %}
