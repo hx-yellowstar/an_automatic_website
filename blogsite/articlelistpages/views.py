@@ -3,10 +3,13 @@ import math
 import json
 import time
 import random
+from threading import Thread
 from blogsite import postgresql
 from django.shortcuts import render
 from django.shortcuts import HttpResponse
+from blogsite.recordvisitorinfo import recordinfo
 from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 
 nav = ['<li class=""><a href="/">首页</a></li>',
@@ -19,6 +22,8 @@ nav = ['<li class=""><a href="/">首页</a></li>',
 # This is very NOT MVC, emm, I'm aware of that
 
 def index(request):
+    t = Thread(target=recordinfo, args=(request,))
+    t.start()
     ctx = {}
     contents = postgresql.Connpsql().readfromtable('article')
     recommend = []
@@ -39,6 +44,8 @@ def index(request):
 
 @csrf_exempt
 def articleclasses(request, classesname):
+    t = Thread(target=recordinfo, args=(request,))
+    t.start()
     ctx = {}
     if request.method=='GET':
         # 因为选择了通过后台来改变已选中元素的状态的方法，所以需要在后台处理一些html代码(嗯，这很不MVC)
@@ -93,6 +100,8 @@ def caculocaltime(intunixtime):
     return articlepostime
 
 def aboutpage(request):
+    t = Thread(target=recordinfo, args=(request,))
+    t.start()
     return render(request, 'about.html')
 
 def changenav(navin, classesname):
