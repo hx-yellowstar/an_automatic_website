@@ -1,10 +1,14 @@
 import time
+from threading import Thread
 from blogsite import postgresql
 from django.shortcuts import render
+from blogsite.recordvisitorinfo import recordinfo
 
 # Create your views here.
 
 def articlesite(request, urlcode):
+    t = Thread(target=recordinfo, args=(request,))
+    t.start()
     ctx = {}
     if request.method == 'GET':
         articlecontents = postgresql.Connpsql().readfromtable('article', columnofselect='page_urlcode', contentofselect=urlcode)[0]
