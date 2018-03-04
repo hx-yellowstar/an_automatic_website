@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load highlight %}
+
+{% block customstyle %}
+<style>
+    h1{
+        margin-left: 0px;
+    }
+    h3{
+        margin: 10px 22px;
+    }
+	p{
+		margin: 0px 20px;
+	}
+    .result-area{
+        margin: 10px 80px;
+    }
+    .fliparea{
+        text-align: center;
+    }
+    .comments{
+        font-size: 10px;
+        color: gray;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if query %}
+<div class="result-area">
+    <h1>搜索结果</h1>
+    {% for result in page.object_list %}
+        <h3><a href="/article/{{ result.object.page_urlcode }}" target="_blank">{{ result.object.article_title }}</a></h3>
+    {% empty %}
+        <p style="margin-left:80px;">没有搜索到任何结果</p>
+    {% endfor %}
+    <p class="comments">注：搜索使用Whoosh+Haystack搭建而成，目前未做过优化，搜索结果很可能并不十分准确</p>
+    {% if page.has_previous or page.has_next %}
+        <div class="fliparea">
+            {% if page.has_previous %}<a href="?q={{ query }}&page={{ page.previous_page_number }}">{% endif %}« Previous{% if page.has_previous %}</a>{% endif %}
+            |
+            {% if page.has_next %}<a href="?q={{ query }}&page={{ page.next_page_number }}">{% endif %}Next »{% if page.has_next %}</a>{% endif %}
+        </div>
+    {% endif %}
+</div>
+{% else %}
+    <p>没想好要搜什么嘛</p>
+{% endif %}
+{% endblock %}

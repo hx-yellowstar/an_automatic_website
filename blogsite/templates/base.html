@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>{% block title %}{% endblock %}</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="alternate icon" type="image/png" href="/static/i/favicon.png">
+  <link rel="stylesheet" href="/static/css/amazeui.min.css"/>
+  <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+    {% block customreference %}
+    {% endblock %}
+  <style>	
+		@media only screen and (min-width: 1200px) {
+		  .blog-g-fixed {
+		    max-width: 1200px;
+		  }
+		}
+		@media only screen and (min-width: 641px) {
+		  .blog-sidebar {
+		    font-size: 1.4rem;
+		  }
+		}
+		.blog-title {
+		  margin: 10px 0 20px 0;
+		}
+		.blog-meta {
+		  font-size: 14px;
+		  margin: 10px 0 20px 0;
+		  color: #222;
+		}
+		.blog-meta a {
+		  color: #27ae60;
+		}
+		.blog-pagination a {
+		  font-size: 1.4rem;
+		}
+		.blog-team li {
+		  padding: 4px;
+		}
+		.blog-team img {
+		  margin-bottom: 0;
+		}
+		.blog-content img,
+		.blog-team img {
+		  max-width: 100%;
+		  height: auto;
+		}
+		.blog-footer {
+		  padding: 10px 0;
+		  text-align: center;
+		}
+		.am-u-md-4{
+			float: right;
+		}
+  </style>
+  {% block customstyle %}{% endblock %}
+</head>
+<body>
+<header class="am-topbar">
+  <h1 class="am-topbar-brand">
+    <a href="/">Copycat</a>
+  </h1>
+  <button style="margin-top: 9px;" class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only"
+          data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span
+      class="am-icon-bars"></span></button>
+    <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
+        <ul class="am-nav am-nav-pills am-topbar-nav">
+            {% autoescape off %}
+            {% if nav %}
+                {{nav}}
+            {% else %}
+                <li class="am-active"><a href="/">首页</a></li>
+               <li class=""><a href="/classify/general">全部</a></li>
+               <li class=""><a href="/classify/cell">手机</a></li>
+               <li class=""><a href="/classify/bat">BAT</a></li>
+               <li class=""><a href="/classify/bikesharing">共享单车</a></li>
+               <li class=""><a href="/classify/ai">人工智能</a></li>
+               <li class=""><a href="/classify/hardware">硬件</a></li>
+            {% endif %}
+            {% endautoescape %}
+        </ul>
+    <form method="get" id="searchform" class="am-topbar-form am-topbar-left am-form-inline am-topbar-right" role="search" action="{% url 'haystack_search' %}">
+      <div class="am-form-group">
+        <input type="search" name="q" class="am-form-field am-input-sm" placeholder="搜索文章" required>
+      </div>
+      <button type="submit" class="am-btn am-btn-default am-btn-sm">搜索</button>
+    </form>
+  </div>
+</header>
+{% block content %}
+{% endblock %}
+<footer class="blog-footer">
+  <p>A website<br/>
+    <small>based on the AmazeUI.</small>
+  </p>
+</footer>
+<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+<script src="/static/js/amazeui.ie8polyfill.min.js"></script>
+<script src="/static/js/amazeui.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+create table article (article_title varchar(500), article_url varchar(350) primary key, release_time_detected varchar(200), article_excerpt varchar(300), article_content varchar(30000), article_class varchar(100));
+create table crawledurls (url varchar(350) primary key);
