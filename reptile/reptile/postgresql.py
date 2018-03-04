@@ -10,7 +10,6 @@ import psycopg2
 
 
 class Connpsql(object):
-    #除了writedata可以保持连接连续写入外，其他的连接全部都是即用即建，用完即断，因为用Python进行的postgresql连接一出错就会失效
 
     def __init__(self, database='djangosite', host='localhost', maintainconnect=False):
         self.conn = psycopg2.connect(database=database, user='username', password='password', host=host, port='5432')
