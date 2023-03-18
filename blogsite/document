@@ -1,0 +1,2 @@
+create table article (article_title varchar(500) primary key, article_url varchar(350), release_time_detected varchar(200), article_excerpt varchar(300), article_content varchar(30000), article_class varchar(100));
+create table visitorinfo (host varchar(350), full_request varchar(15000), remote_addr varchar(150), proxy_remote_ip varchar(150), user_agent varchar(2000), visitime varchar(200));

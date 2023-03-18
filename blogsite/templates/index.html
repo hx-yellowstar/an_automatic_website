@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}主页{% endblock %}
+{% block customstyle %}
+<style>
+	.am-u-lg-7{
+		width:90%;
+	}
+</style>
+{% endblock %}
+{% block content %}
+<div class="am-g am-g-fixed blog-g-fixed">
+  <div class="am-u-md-8">
+    {% for articlecontent in articles %}
+    <article class="blog-main">
+      <h3 class="am-article-title blog-title">
+        <a href="/article/{{articlecontent.5}}">{{articlecontent.0}}</a>
+      </h3>
+      <h4 class="am-article-meta blog-meta">原文发布于 {{articlecontent.2}} (自动检测结果)</h4>
+      <div class="am-g blog-content">
+        <div class="am-u-lg-7">
+            {% autoescape off %}
+            {{articlecontent.3}}
+            {% endautoescape %}
+        </div>
+        <!--<div class="am-u-lg-5">-->
+          <!--<p><img src="http://f.cl.ly/items/451O3X0g47320D203D1B/不夠活潑.jpg"></p>-->
+        <!--</div>-->
+      </div>
+    </article>
+    <hr class="am-article-divider blog-hr">
+    {% endfor %}
+  </div>
+	<!-- 侧栏-->
+  <div class="am-u-md-4 blog-sidebar">
+    <div class="am-panel-group">
+      <section class="am-panel am-panel-default">
+        <div class="am-panel-hd">关于我</div>
+        <div class="am-panel-bd">
+          <p>自动化运行的新闻综合站</p>
+          <a class="am-btn am-btn-success am-btn-sm" href="/about">查看更多 →</a>
+        </div>
+      </section>
+      <section class="am-panel am-panel-default">
+        <div class="am-panel-hd">发现</div>
+        <ul class="am-list blog-list">
+          {% for each in recommend %}
+          <li><a href="article/{{each.1}}">{{each.0}}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+    </div>
+  </div>
+</div>
+<!--侧栏-->
+{% endblock %}
+
+
